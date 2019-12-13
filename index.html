@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<style>
+  .content {
+    width: 150px;
+    height: 150px;
+    background: blanchedalmond;
+  }
+
+  .fade-div {
+    width: 100px;
+    height: 100px;
+    background: red;
+    opacity: 1;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s linear;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div>
+      <!-- checkbox -->
+      <input type="checkbox" v-model="checks" value="香蕉">
+      <input type="checkbox" v-model="checks" value="苹果">
+      <input type="checkbox" v-model="checks" value="橘子">
+      {{checks}}
+      <br>
+      <!-- radio -->
+      <label for="woman">男</label>
+      <input type="radio" name="woman" id="woman" value="0" v-model="gender">
+      <label for="man">女</label>
+      <input type="radio" name="man" id="man" value="1" v-model="gender"> {{gender}}
+      <br>
+      <!-- directive -->
+      <div v-color="'red'" v-click-outside="'setDivhide'" style="display: inline-block;">
+        <input type="text" @focus="isShow=true" v-focus>
+        <div class="content" v-if="isShow">
+          <button>点击</button>
+        </div>
+      </div>
+      <br>
+      <!-- computed -->
+      {{getName}}
+      <br>
+      <!-- computed:get/set -->
+      <input type="text" v-model="data1"> <input type="text" v-model="data2"> {{sum}}
+      <br>
+      <!-- watch:立即执行/深度检测 -->
+      {{obj}}
+      <br>
+      <!-- animation -->
+      <button @click="fade=!fade">fade</button>
+      <!-- animation.css  设置transition进入，离开类名  enter-active-calss="" leave-active-calss="" -->
+      <transition name="fade">
+        <div class="fade-div" v-if="fade">111</div>
+      </transition>
+    </div>
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script src="./node_modules/lodash/lodash.js"></script>
+  <script>
+    // 一般在mounted中请求，因为可以获取到this.$el
+    let arr = [1, 2, 3, 4, 5, 6, 7, 8];
+    console.log('lodash.chunk数组', _.chunk(arr, 2))
+    Vue.directive("color", function (el, bindings, vnode) {
+      el.style.border = `1px solid ${bindings.value}`
+    })
+    let vm = new Vue({
+      el: "#app",
+      // beforeRouteLeave  // 路由离开之前触发
+      // beforeRouteEnter  // 路由进入之前触发
+      data() {
+        return {
+          checks: [],
+          gender: "",
+          isShow: false,
+          firstName: '小羊',
+          lastName: '老羊',
+          data1: "",
+          data2: "",
+          obj: { a: 1, b: 2, c: { a: 1 } },
+          fade: false
+        }
+      },
+      methods: {
+        setDivhide() {
+          this.isShow = false;
+        }
+      },
+      // template: "<div>hello123</div>",   // cli 生成的项目 template标签也会转为render
+      // render: function (createElement, context) {  // render 会替换app中的内容 jsx (render场景是用jsx编写组件时候)
+      //   return createElement('div', {attrs: {id: 123}}, 'hello');
+      // },
+      directives: {
+        focus: {  // 实现focus的两种方式 binding inserted
+          bind(el) {
+            Vue.nextTick(() => {  // 利用vue的nexttick dom渲染完再执行
+              el.focus();
+            })
+          },
+          inserted(el) {  // 元素插入到页面中才会触发
+            el.focus();
+          },
+          update(el) {
+
+          }
+        },
+        clickOutside(el, bindings, vnode) {  // el绑定指令的dom   vnode.context当前组件  bindings传入参数
+          document.addEventListener('click', (e) => {
+            if (!el.contains(e.target)) {
+              vnode.context[bindings.value]();
+            }
+          })
+        }
+      },
+      filters: {
+
+      },
+      computed: {
+        getName() {
+          return this.firstName + this.lastName;
+        },
+        sum: {
+          get() {
+            return this.data1 + this.data2;
+          },
+          set(val) {
+            this.data1 = val;
+          }
+        }
+      },
+      watch: {
+        obj: {
+          handler(newVal, oldVal) {
+            setTimeout(() => {
+              console.log(newVal, oldVal)
+            }, 1000);
+          },
+          immediate: true,
+          deep: true
+        }
+      },
+      // 生命周期
+      beforeCreate () {
+        
+      },
+      created () {
+        
+      },
+      beforeMount() {
+
+      },
+      mounted () {
+        
+      },
+      beforeUpdate () {
+        
+      },
+      updated () {
+        
+      },
+      beforeDestroy () {
+        
+      },
+      destroyed () {
+        
+      }
+    })
+  </script>
+</body>
+
+</html>
