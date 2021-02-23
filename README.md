@@ -25,13 +25,13 @@
 
       第二种 .sync
       父组件
-      <Son1 :mny.sync="mny></Son1>
+      <Son1 :mny.sync="mny"></Son1>
       子组件
       this.$emit('update.mny',200)
 
       第三种 v-modle
       // 父组件
-      <Son1 :mny.sync="mny></Son1>
+      <Son1 v-modle="mny"></Son1>
       子组件
       value: { // 用v-modle绑定方式，接收到的属性名只能是value
         type: Number

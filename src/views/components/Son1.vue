@@ -21,7 +21,7 @@ export default {
     change() {
       // this.$emit('xxx',200) // 第一种
       // this.$emit('update:mny',200) // 第二种
-      this.$emit('input', 200) // 第三种 // 触发的事件只能是input
+      this.$emit('input', 200) // 第三种v-modle // 触发的事件只能是input
     }
   }
 }
