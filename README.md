@@ -1,9 +1,9 @@
-### 全面学习Vue
+# 全面学习Vue
 
 - 组件通信
   - 父组件给子组件传值 props
   
-    ```
+    ```vue
       父组件
       <Son1 :mny="mny"></Son1>
       子组件
@@ -13,10 +13,10 @@
         }
       }
     ```
-    
+
   - 子组件改变父组件值 $emit  
 
-    ```
+    ```vue
       第一种
       父组件
       <Son1 :mny="mny" @xxx="change"></Son1>
@@ -27,13 +27,13 @@
       父组件
       <Son1 :mny.sync="mny"></Son1>
       子组件
-      this.$emit('update.mny',200)
+      this.$emit('update:mny',200)
 
-      第三种 v-modle
+      第三种 v-model
       // 父组件
-      <Son1 v-modle="mny"></Son1>
+      <Son1 v-model="mny"></Son1>
       子组件
-      value: { // 用v-modle绑定方式，接收到的属性名只能是value
+      value: { // 用v-model绑定方式，接收到的属性名只能是value
         type: Number
       }
       this.$emit('input',200) // 触发的事件只能是input
@@ -42,14 +42,14 @@
 - $attrs、$listeners
   - $attrs 批量向下传入属性
 
-  ```
+  ```vue
     <Son1 name="笑笑"></Son1>
     儿子1: {{$attrs.name}}
   ```
 
-   - $listeners 批量向下传入方法
+  - $listeners 批量向下传入方法
 
-  ```
+  ```vue
     <Son2 age="10" @click="()=>{this.mny = 500}"></Son2>
     <!-- 可以在son2组件中使用listeners属性,可以将方法继续向下传递 -->
     <Grandson2 v-bind="$attrs" v-on="$listeners"></Grandson2>
